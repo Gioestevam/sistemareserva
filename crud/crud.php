@@ -128,14 +128,24 @@ $connect = new PDO("mysql:host=localhost; dbname=sistemreserve", "root", "root")
 				echo "<script>alert('informe email e senha!');</script>";
 			}
 
-			$logar = $connect->prepare("SELECT * FROM user WHERE email_user = :email_user AND password_user = :password_user");
+			$logar = $connect->prepare("SELECT * FROM user WHERE email_user = :email_user AND password_user = :password_user" );
 			$logar->bindValue(":email_user", $email_user, PDO::PARAM_STR);
 			$logar->bindValue(":password_user", $password_user, PDO::PARAM_STR);
 			$logar->execute();
 
+			$_SESSION["permission_user"]  = $permission;
+
 			if($logar->rowCount() == 1){
-				$_SESSION["email_user"] = $email_user;
-				header("location:logado/admin/admin.php");
+				if($permission == 1){
+					$_SESSION["email_user"] = $email_user;
+					header("location:logado/admin/admin.php");
+				} else if ($permission == 2) {
+					$_SESSION["email_user"] = $email_user;
+					header("location:logado/mod/mod.php");
+				} else if ($permission == 3){
+					$_SESSION["email_user"] = $email_user;
+					header("location:logado/mod/mod.php");
+				}
 			} else {
 				header("location: index.php");
 			}
@@ -186,18 +196,34 @@ $connect = new PDO("mysql:host=localhost; dbname=sistemreserve", "root", "root")
 
 		global $connect;
 
-		$code_item 			= $POST_["code_item"];
-		//$amount_item 		= filter_input(INPUT_POST,"amount_item", FILTER_SANITIZE_STRING);
-		$name_item 			= $POST_["name_item"];
-		//$description_item 	= filter_input(INPUT_POST,"description_item", FILTER_SANITIZE_STRING);
+		// $code_item 			= $POST_["code_item"];
+		// $amount_item 		= filter_input(INPUT_POST,"amount_item", FILTER_SANITIZE_STRING);
+		// $name_item 			= $POST_["name_item"];
+		// $description_item 	= filter_input(INPUT_POST,"description_item", FILTER_SANITIZE_STRING);
 
-		$insert_stock = $connect->prepare("INSERT INTO stock (code_item, name_item) VALUES (:code_item, :name_item)");
-		$insert_stock->bindValue(":code_item", $code_item);
-		//$insert_stock-> bindValue(":amount_item", $amount_item);
-		$insert_stock->bindValue(":name_item", $name_item);
-		//$insert_stock-> bindValue(":descripttion_item", $description_item);
-		//$insert_stock-> bindValue(":img_item", $conteudo, PDO::PARAM_LOB);
-		$insert_stock->execute();
+		if (isset($_POST['cadastrar_item'])) {
+
+            $code_item           = $_POST['code_item'];
+            $name_item           = $_POST['name_item'];
+            $amount_item         = $_POST['amount_item'];
+            $description_item    = $_POST['description_item'];
+            $conteudo_item       = $_POST['img_item'];
+
+		
+			$insert_stock = $connect->prepare("INSERT INTO stock (code_item, name_item, amount_item, description_item, img_item) VALUES (:code, :name, :amount, :description, :img)");
+			$insert_stock->bindValue("code", $code_item);
+			$insert_stock->bindValue("amount", $amount_item);
+			$insert_stock->bindValue("name", $name_item);
+			$insert_stock->bindValue("description", $description_item);
+			$insert_stock->bindValue("img", $conteudo_item);
+			$insert_stock->execute();
+
+            echo "<script type='text/javascript'> alert('Sucesso!!!');</script>";
+
+
+		}
 	}
+
+
 
 ?>

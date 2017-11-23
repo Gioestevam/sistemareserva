@@ -1,5 +1,6 @@
 <?php
     require "../../crud/crud.php";
+
 ?>
 <html>
     <head>
@@ -54,6 +55,9 @@
                 <div>
                     Cadastrar Novo Item
                 </div>
+                <?php
+                    create_stock();
+                ?>
                 <form method="post">
                     <div>
                         <div>
