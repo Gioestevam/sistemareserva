@@ -7,6 +7,14 @@
 
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
+* {
+	font-family: 'Roboto' !important;
+}
+
+.body-login, body {
+	background: #006FA7;
+}
+
 #color_background {
     width: 100%;
     height: 100%;  
@@ -404,6 +412,8 @@ label[for="bt_sair"] {
 
 .cor {
     background-color: #FFFFFF;
+	width: 100%;
+	float: left;
 }
 /* VVVV formataopção logo facima sem responsividade VVVV*/
 
@@ -699,6 +709,8 @@ label[for="bt_sair"] {
         background-color: #efefef;
         z-index: 1;
         overflow-x:auto;
+		box-sizing: border-box;
+		padding: 20px;
     }
     
     .divprincipal table {
