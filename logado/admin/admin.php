@@ -1,13 +1,8 @@
 <?php
-	require "../../config.php";
-
-	logout();
-
-	session_start();
-
-	if(isset($_SESSION["email_user"])){
-	} else {
-		header("location:index.php");
+	require_once("../../config.php");
+	if($_SESSION['logged'] == "no-logged") {
+		header("Location: /index.php");
+		exit;
 	}
 ?>
 <html>
@@ -57,32 +52,39 @@
 				<table>
 					<thead>               
 						<tr>
-							<td>Numero do pedido</td>
+							<td>Número do pedido</td>
 							<td>Data de pedido:</td>
-							<td>Data da Entrada:</td>
+							<td>Data de Entrega:</td>
+							<td>Data de Devolução:</td>
 							<td>Itens do Pedido:</td>
 							<td>Local de Entrega:</td>
 							<td>Solicitante:</td>
 						</tr>
 					</thead>
 					<tbody>
+						<?php
+							$getPedidos = getReserve();
+							foreach($getPedidos as $pedido) {
+								
+								// getDataStock
+								$getDataStock = getDataStock($pedido->item);
+								
+								// getDataUserStock
+								
+								$getDataUserStock = getDataUserStock($pedido->user);
+						?>
 						<tr>
-							<td>fulano</td>
-							<td>35/02/3015</td>
-							<td>sei la</td>
+							<td><?php echo $pedido->id_reserve; ?></td>
+							<td><?php echo date('d/m/Y', $pedido->date_reserve); ?></td>
+							<td><?php echo $pedido->delivery_reserve; ?></td>
+							<td><?php echo $pedido->devolution; ?></td>
+							<td><?php echo $getDataStock->name_item ." (". $pedido->quantidade .")" ?></td>
+							<td><?php echo $pedido->local_reserve; ?></td>
+							<td><?php echo $getDataUserStock->full_name_user; ?></td>
 						</tr>
-
-						<tr>
-							<td>eu</td>
-							<td>666/666/666</td>
-							<td>pc da nasa</td>
-						</tr>
-
-						<tr>
-							<td>goku</td>
-							<td>mais de 8000</td>
-							<td>genki dama</td>
-						</tr>
+						<?php
+							}
+						?>
 					</tbody>
 				</table>
 			</div>

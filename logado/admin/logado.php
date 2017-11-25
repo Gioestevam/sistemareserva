@@ -1,8 +1,7 @@
 <?php
 	require "../../config.php";
-	
-	logout();
 
+	session_name('user');
 	session_start();
 
 	if(isset($_SESSION["email_user"])){
