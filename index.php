@@ -1,6 +1,5 @@
 <?php
-	require "config.php";
-	logar();
+	require_once("config.php");
 ?>
 <html lang="pt-br">
 	<head>
@@ -8,7 +7,7 @@
 		<title>SOLICITAÇAO DE EQUIPAMENTOS</title>
 		<link rel="stylesheet" type="text/css" href="assets/css/design.css">
 	</head>
-	<body>
+	<body class="body-login">
 		<div id="color_background">
 			<center>
 		        <div id="logo">
@@ -16,7 +15,20 @@
 		        </div>
 		 	</center>
 			<div>
-				<form method="post" id="form_field">					
+				<?php
+					if(isset($_POST['login'])) {
+						$email = filter_input(INPUT_POST,"email_user", FILTER_SANITIZE_STRING);
+						$password = sha1(md5(filter_input(INPUT_POST,"password_user", FILTER_SANITIZE_STRING)));
+						
+						if(empty($email) OR empty($password)) {
+							echo "<script>alert('Preencha todos os campos!');</script>";
+						} else {
+							login($email, $password);
+							header("Location: /logado/admin/admin.php");
+						}
+					}
+				?>
+				<form method="POST" id="form_field">					
 					<div>
 						<label for="userLogin">Email:</label>
 						<input name="email_user" type="text" aria-label="Usuário" placeholder="Usuário">
