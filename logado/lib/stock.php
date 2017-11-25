@@ -59,13 +59,30 @@
                       <td>Nome</td>
                       <td>Descrição</td>
                       <td>Quantidade</td>
+					  <td>Restante</td>
                       <td>Opção</td>
                     </tr>
                   </thead>
+				  <br/>
                   <tbody>
-                      <?php
-                        read_stock();
-                      ?>
+					<?php
+						$getStock = getStock();
+						foreach($getStock as $stock) {
+					?>
+                      <tr>
+						<td><?php echo $stock->code_item; ?></td>	
+						<td><?php echo $stock->name_item; ?></td>
+						<td><?php echo $stock->description_item; ?></td>
+						<td><?php echo $stock->amount_item; ?></td>
+						<td><?php echo $stock->remaining; ?></td>
+						<td>
+							<a href="update.php?edit_id=<?php echo $stock->id_item; ?>">Atualizar</a>
+							<a href="delete.php?del_id=<?php echo $stock->id_item; ?>">Delete</a>
+						</td>
+					</tr>
+					<?php
+						}
+					?>
                   </tbody>
                 </table>
             </div>

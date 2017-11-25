@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta charset ="utf-8">
-        <title>Adicionar Items</title>
+        <title>Reserva Item</title>
         <link rel="stylesheet" type="text/css" href="../../assets/css/design.css">
     </head>
     <body>
@@ -37,7 +37,7 @@
                 </nav>
             </div>
             <div class="absolutecabecalho">
-                Estoque
+                Reservar Item
                 <!-- ou nome da pagina atual  -->
             </div>
             <div class="absoluteimgsair">
@@ -47,65 +47,79 @@
             </div>
             <div class="divprincipal">
                 <div>
-                    <a href="stock.php">Voltar para o estoque</a>
-                </div>
-                <div>
-                    <input type="search" name="search">
-                </div>
-                <div>
                     Cadastrar Novo Item
                 </div>
+				<br/>
                 <?php
-					if(isset($_POST['cadastrar_item'])) {
+                    if(isset($_POST['save'])) {
 						
-						$code_item        = $_POST['code_item'];
-						$name_item        = $_POST['name_item'];
-						$amount_item      = $_POST['amount_item'];
-						$description_item = $_POST['description_item'];
-						$conteudo_item    = $_POST['img_item'];
+						$item       = $_POST['item'];
+						$quantidade = $_POST['quantidade'];
+						$entrega    = $_POST['entrega'];
+						$devolucao  = $_POST['devolucao'];
+						$local      = $_POST['local'];
 						
-						if(empty($code_item) OR empty($name_item) OR empty($amount_item) OR empty($description_item) OR empty($conteudo_item)) {
+						$dataStock = dataStock($item);
+						$restanteEstoque = $dataStock->remaining;
+						
+						$novoStock = $dataStock->remaining - $quantidade;
+						
+						echo $novoStock;
+						
+						if(empty($item) OR empty($quantidade) OR empty($entrega) OR empty($devolucao) OR empty($local)) {
 							echo "<script>alert('Preencha todos os campos!');</script>";
+						} elseif($quantidade > $restanteEstoque) {
+							echo "<script>alert('A Quantidade solicitada é maior que a quantidade do estoque!');</script>";
 						} else {
-							insertStock($code_item, $name_item, $amount_item, $description_item, $conteudo_item);
-							echo "<script>alert('Sucesso!!!');</script>";
+							updateStockforReserve($item, $novoStock);
+							reserveItem($item, $quantidade, $entrega, $devolucao, $local);
+							echo "<script>alert('OK!');</script>";
 						}
-						
 					}
                 ?>
                 <form method="POST">
                     <div>
                         <div>
-                            Codigo do item
+                            Selecione o item
                         </div>
-                        <input type="text" name="code_item" placeholder="Digite o código do item">
+                        <select name="item">
+							<?php
+								$getAllStock = getAllStock();
+								foreach($getAllStock as $stock) {
+							?>
+							<option value="<?php echo $stock->id_item; ?>"><?php echo $stock->name_item; ?> (<?php echo $stock->remaining; ?>)</option>
+							<?php
+								}
+							?>
+						</select>
+						<br/><small>Item (Quantidade no Estoque)</small>
                     </div>
                     <div>
                         <div>
-                            Nome do Item
+                            Quantidade
                         </div>
-                        <input type="text" name="name_item" placeholder="Digite o nome do Item">
+                        <input type="number" name="quantidade" min="1" placeholder="Quantidade do produto">
                     </div>
                     <div>
                         <div>
-                            Descrição do Item
+                            Data de Entrega
                         </div>
-                        <input type="text" name="description_item" placeholder="Digite a descrição do item">
+                        <input type="text" name="entrega" placeholder="Data de Entrega">
+                    </div>
+					<div>
+                        <div>
+                            Data de Devolução
+                        </div>
+                        <input type="text" name="devolucao" placeholder="Data de Devolução">
                     </div>
                     <div>
                         <div>
-                            Quantidade de itens
+                            Local de utilização
                         </div>
-                        <input type="number" name="amount_item" min="1" placeholder="Digite a quantidade dos itens">
+                        <input type="text" name="local" placeholder="Local de utilização">
                     </div>
                     <div>
-                        <div>
-                            Imagen do Item
-                        </div>
-                        <input type="file" name="img_item">
-                    </div>
-                    <div>
-                        <input type="submit" name="cadastrar_item" value="Cadastrar Item">
+                        <button type="submit" name="save">Reservar</button>
                     </div>
                 </form>
             </div>
