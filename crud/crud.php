@@ -1,12 +1,29 @@
 <?php
 
-$connect = new PDO("mysql:host=localhost; dbname=sistemreserve", "root", "root");
+// Date Default
 
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Maceio');
+
+// Session Start
+
+session_name('user');
+session_start();
+
+// Function Logged
+
+if(empty($_SESSION['logged'])) {
+	$_SESSION['logged'] = "no-logged";
+}
+
+// Connect MySQL
+
+$connect = new PDO("mysql:host=localhost; dbname=facima", "root", "");
+$connect->query("SET NAMES utf8;");
 
 	function create() {
 
 		global $connect;
-
 
 		if(isset($_POST["cadastrar"])) {
 
@@ -111,43 +128,31 @@ $connect = new PDO("mysql:host=localhost; dbname=sistemreserve", "root", "root")
 	}
 	
 
-	//Verificação de USUÀRIO 
-
-	function logar(){
-
-		session_start();
-
+	function login($email, $password) {
 		global $connect;
-
-		if(isset($_POST["login"])){
-
-			$email_user	 	 = filter_input(INPUT_POST,"email_user", FILTER_SANITIZE_STRING);
-			$password_user	 = sha1(md5(filter_input(INPUT_POST,"password_user", FILTER_SANITIZE_STRING)));
-
-			if(empty($email_user) || empty($password_user)){
-				echo "<script>alert('informe email e senha!');</script>";
-			}
-
-			$logar = $connect->prepare("SELECT * FROM user WHERE email_user = :email_user AND password_user = :password_user" );
-			$logar->bindValue(":email_user", $email_user, PDO::PARAM_STR);
-			$logar->bindValue(":password_user", $password_user, PDO::PARAM_STR);
-			$logar->execute();
-
-			$_SESSION["permission_user"]  = $permission;
-
-			if($logar->rowCount() == 1){
-				if($permission == 1){
-					$_SESSION["email_user"] = $email_user;
-					header("location:logado/admin/admin.php");
-				} else if ($permission == 2) {
-					$_SESSION["email_user"] = $email_user;
-					header("location:logado/mod/mod.php");
-				} else if ($permission == 3){
-					$_SESSION["email_user"] = $email_user;
-					header("location:logado/mod/mod.php");
-				}
+		$login = $connect->prepare("SELECT * FROM user WHERE (email_user = :email_user AND password_user = :password_user) LIMIT 1");
+		$login->bindValue("email_user", $email, PDO::PARAM_STR);
+		$login->bindValue("password_user", $password, PDO::PARAM_STR);
+		$login->execute();
+		if(!$login->rowCount() <= 0) {
+			$_SESSION['email_user'] = $email;
+			$_SESSION['logged'] = "logged";
+		} else {
+			$_SESSION['logged'] = "no-logged";
+		}
+	}
+	
+	function dataUser() {
+		global $connect;
+		$email = $_SESSION['email_user'];
+		if(!empty($email)) {
+			$dataUser = $connect->prepare("SELECT * FROM user WHERE email_user = :email LIMIT 1");
+			$dataUser->bindValue("email", $email, PDO::PARAM_STR);
+			$dataUser->execute();
+			if(!$dataUser->rowCount() <= 0) {
+				return $dataUser->fetchObject();
 			} else {
-				header("location: index.php");
+				return false;
 			}
 		}
 	}
@@ -155,75 +160,106 @@ $connect = new PDO("mysql:host=localhost; dbname=sistemreserve", "root", "root")
 	function logout() {
 
 		global $connect;
-
-		if(isset($_POST["logout"])){
-			session_start();
-			session_destroy();
-			header("location: index.php");
-		}
+		session_name('user');
+		session_destroy();
+		header("location: /index.php");
 
 	}
-
-	// LER ITEM NO ESTOQUE
-
-	function read_stock() {
-		
+	
+	function getReserve() {
 		global $connect;
-
-		$select = $connect->prepare("SELECT * FROM stock");
-		$select -> setFetchMode(PDO::FETCH_ASSOC);
-		$select -> execute();
-		while ($data=$select->fetch()){
-		?>
-		<tr>
-			<br>
-			<td><?php echo $data["code_item"];?></td>	
-			<td><?php echo $data["name_item"];?></td>
-			<td><?php echo $data["description_item"];?></td>
-			<td><?php echo $data["amount_item"];?></td>
-			<td>
-				<a href="update.php?edit_id=<?php echo $data['id_user']; ?>">Atualizar</a>
-				<a href="delete.php?del_id=<?php echo $data['id_user']; ?>">Delete</a>
-			</td>
-		</tr>
-		<?php
-		}
+		$getReserve = $connect->prepare("SELECT * FROM reserve ORDER by id_reserve DESC");
+		$getReserve->execute();
+		return $getReserve->fetchAll(PDO::FETCH_OBJ);
 	}
-
-	// Cadastrar Item no Estoque
-
-	function create_stock(){
-
+	
+	function getDataStock($id) {
 		global $connect;
-
-		// $code_item 			= $POST_["code_item"];
-		// $amount_item 		= filter_input(INPUT_POST,"amount_item", FILTER_SANITIZE_STRING);
-		// $name_item 			= $POST_["name_item"];
-		// $description_item 	= filter_input(INPUT_POST,"description_item", FILTER_SANITIZE_STRING);
-
-		if (isset($_POST['cadastrar_item'])) {
-
-            $code_item           = $_POST['code_item'];
-            $name_item           = $_POST['name_item'];
-            $amount_item         = $_POST['amount_item'];
-            $description_item    = $_POST['description_item'];
-            $conteudo_item       = $_POST['img_item'];
-
-		
-			$insert_stock = $connect->prepare("INSERT INTO stock (code_item, name_item, amount_item, description_item, img_item) VALUES (:code, :name, :amount, :description, :img)");
-			$insert_stock->bindValue("code", $code_item);
-			$insert_stock->bindValue("amount", $amount_item);
-			$insert_stock->bindValue("name", $name_item);
-			$insert_stock->bindValue("description", $description_item);
-			$insert_stock->bindValue("img", $conteudo_item);
-			$insert_stock->execute();
-
-            echo "<script type='text/javascript'> alert('Sucesso!!!');</script>";
-
-
+		$getDataStock = $connect->prepare("SELECT * FROM stock WHERE id_item=:id LIMIT 1");
+		$getDataStock->bindValue("id", $id, PDO::PARAM_STR);
+		$getDataStock->execute();
+		if(!$getDataStock->rowCount() <= 0) {
+			return $getDataStock->fetchObject();
+		} else {
+			return false;
 		}
 	}
+	
+	function getDataUserStock($id) {
+		global $connect;
+		$getDataUserStock = $connect->prepare("SELECT * FROM user WHERE id_user=:id LIMIT 1");
+		$getDataUserStock->bindValue("id", $id, PDO::PARAM_STR);
+		$getDataUserStock->execute();
+		if(!$getDataUserStock->rowCount() <= 0) {
+			return $getDataUserStock->fetchObject();
+		} else {
+			return false;
+		}
+	}
+	
+	function getAllStock() {
+		global $connect;
+		$getAllStock = $connect->prepare("SELECT * FROM stock ORDER by id_item");
+		$getAllStock->execute();
+		if(!$getAllStock->rowCount() <= 0) {
+			return $getAllStock->fetchAll(PDO::FETCH_OBJ);
+		} else {
+			return false;
+		}
+	}
+	
+	function dataStock($id) {
+		global $connect;
+		$dataStock = $connect->prepare('SELECT * FROM stock WHERE id_item=:id LIMIT 1');
+		$dataStock->bindValue("id", $id, PDO::PARAM_STR);
+		$dataStock->execute();
+		if(!$dataStock->rowCount() <= 0) {
+			return $dataStock->fetchObject();
+		} else {
+			return false;
+		}
+	}
+	
+	function reserveItem($item, $quantidade, $entrega, $devolucao, $local) {
+		global $connect;
+		$datareserva = time();
+		$user = dataUser()->id_user;
+		$reserveItem = $connect->prepare('INSERT INTO reserve (delivery_reserve, date_reserve, local_reserve, item, quantidade, user, devolution) VALUES (:delivery_reserve, :date_reserve, :local_reserve, :item, :quantidade, :user, :devolution)');
+		$reserveItem->bindValue('delivery_reserve', $entrega);
+		$reserveItem->bindValue('date_reserve', $datareserva);
+		$reserveItem->bindValue('devolution', $devolucao);
+		$reserveItem->bindValue('local_reserve', $local);
+		$reserveItem->bindValue('item', $item);
+		$reserveItem->bindValue('quantidade', $quantidade);
+		$reserveItem->bindValue('user', $user);
+		$reserveItem->execute();
+	}
+	
+	function updateStockforReserve($item, $valor) {
+		global $connect;
+		$updateStockforReserve = $connect->prepare('UPDATE stock SET remaining=:valor WHERE id_item=:item');
+		$updateStockforReserve->bindValue('valor', $valor);
+		$updateStockforReserve->bindValue('item', $item);
+		$updateStockforReserve->execute();
+	}
 
+	function getStock() {
+		global $connect;
+		$select = $connect->prepare("SELECT * FROM stock ORDER by id_item DESC");
+		$select->execute();
+		return $select->fetchAll(PDO::FETCH_OBJ);
+	}
 
+	function insertStock($code_item, $name_item, $amount_item, $description_item, $conteudo_item) {
+		global $connect;
+		$insertStock = $connect->prepare("INSERT INTO stock (code_item, name_item, amount_item, description_item, img_item, remaining) VALUES (:code, :name, :amount, :description, :img, :remaining)");
+		$insertStock->bindValue("code", $code_item);
+		$insertStock->bindValue("amount", $amount_item);
+		$insertStock->bindValue("name", $name_item);
+		$insertStock->bindValue("description", $description_item);
+		$insertStock->bindValue("img", $conteudo_item);
+		$insertStock->bindValue("remaining", $amount_item);
+		$insertStock->execute();
+	}
 
 ?>
