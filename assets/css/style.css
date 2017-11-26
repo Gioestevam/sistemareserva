@@ -1,0 +1,402 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Import Style Fonts */
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+/* 
+  *  TELA DE CADASTRO
+*/
+
+.body-login {
+	background: #006FA7;
+}
+
+#logo {
+    width: 300px;
+    height: 150px;
+    margin-top: 25px;
+}
+
+#logo img {
+    width: 300px;
+    height: 150px;
+}
+
+#form_cadastro {
+    width: 300px;
+    height: 400px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+#form_cadastro input {
+    width: 300px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;   
+}
+
+#form_cadastro label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    color: #fff;
+    font-weight: bold;
+}
+
+#form_cadastro #btn-success{
+    margin-top: 15px;
+    width: 300px;
+    height: 30px;
+    cursor: pointer;
+    background-color: #d3d3d3;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #006fa7;
+}
+
+
+.alert_error {
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    background-color: red;
+    text-align: center;
+    top: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.alert_success {
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    background-color: green;
+    text-align: center;
+    top: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: bold;   
+    color: #fff;
+}
+
+/*
+ *   TELA DE LOGIN
+*/
+
+#form_field {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    padding: 0;
+    margin-top: 30px;
+}
+
+#form_field #enter {
+    width: 100px;
+    padding-bottom: 30px;
+    margin: 0 auto;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+#form_field label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    color: white;
+}
+
+#form_field input {
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 5px;
+}
+
+#form_field button {
+    margin-top: 15px;
+    width: 300px;
+    height: 30px;
+    cursor: pointer;
+    background-color: #d3d3d3;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #006fa7;   
+}
+
+#form_field p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+    color: white;
+}
+
+#form_field a {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    color: white;
+    text-decoration: none;
+    color: #FAEBD7;
+}
+
+#form_field a:hover {
+    color: #03A9F4;
+
+}
+
+#form_field #login {
+    background-color: #d3d3d3d3;
+    margin-top: 12px;
+    margin-bottom: 3px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #000;  
+}
+
+#forgot_password {
+    padding-top: 10px;
+}
+
+/*
+	* TOOLBAR
+*/
+
+#toolbar {
+	width: 100%;
+	height: 80px;
+	background-color: #006FA7; 
+}
+
+/*
+	* LOGO TOOLBAR
+*/
+
+#toolbar .logo img {
+	width: 150px;
+	width: 150px;
+	float: left;
+}
+
+/*
+	* MENU TOOLBAR
+*/
+
+#toolbar .menu-toolbar {
+	width: 650px;
+	height: 80px;
+	margin: 0 auto;
+	line-height: 80px;
+}
+
+#toolbar .menu-toolbar ul {
+	text-align: center; 
+}
+
+#toolbar .menu-toolbar li {
+	display: inline-block;
+	width: 120px;
+	height: 50px;
+}
+
+#toolbar .menu-toolbar li a {
+	text-decoration: none;
+	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	padding: 10px;
+	font-weight: 900;
+}
+
+#toolbar .menu-toolbar li:hover {
+	color: red;
+}
+
+#toolbar .menu-toolbar ul li a span.icon-profile {
+	background: url('../../assets/img/icon-profile.png') no-repeat center;
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+}
+
+#toolbar .menu-toolbar ul li a span.icon-user {
+	background: url('../../assets/img/icon-user.png') no-repeat center;
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+}
+
+#toolbar .menu-toolbar ul li a span.icon-reserve {
+	background: url('../../assets/img/icon-reserve.png') no-repeat center;
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+}
+
+#toolbar .menu-toolbar ul li a span.icon-stock {
+	background: url('../../assets/img/icon-stock.png') no-repeat center;
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+}
+
+#toolbar .menu-toolbar ul li a span.icon-stats {
+	background: url('../../assets/img/icon-stats.png') no-repeat center;
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+}
+
+#toolbar .logout {
+	float: right;
+	margin-right: 100px;
+	margin-top: -50px;
+}
+
+#toolbar .logout a {
+	text-decoration: none;
+	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	font-weight: 900;
+	cursor: pointer;
+}
+
+/*
+	* CONTENT RESERVE
+*/
+
+.container {
+	background-color: #dedede;
+	width: 80%;
+	height: auto;
+	min-height: 500px;
+	margin: 0 auto;
+	margin-top: 10px;
+	border-radius: 5px 5px 0 0;
+}
+
+.container table {
+	margin-top: 10px;
+	height: auto;
+}
+
+.container th {
+	background-color: #006FA7;
+	border: 1px solid #fff;
+	height: 50px;
+	color: #fff;
+}
+
+.container td {
+	text-align: center;
+}
+
+
+.container .head-content {
+	background-color: #006FA7;
+	border-radius: 5px 5px 0 0;
+	height: 30px;
+	text-align: center;
+	font-family: 'Roboto', sans-serif;
+	font-family: 16px;
+	font-weight: 900;
+	color: #fff;
+}
+
+.container #content-table{
+}
+
+/*
+	* ADD-RESERVE
+*/
+
+#form_field {
+	font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+#form_field select {
+    width: 300px;
+    height: 30px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+button#btn-success, input#btn-success {
+	background-color: #4CAF50;
+	color: #fff;
+	cursor: pointer;
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+}
+
+/*
+	* STOCK
+*/
+
+.container #add-stock {
+	margin-top: 10px;
+}
+
+.container #add-stock a span.icon-addstock {
+	background: url('../../assets/img/icon-addstock.png') no-repeat center;
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+}
+
+.container #add-stock a {
+	text-decoration: none;
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	font-weight: 900;
+	color: #fff;
+}
+
+.container #add-stock a:hover {
+	color: #006FA7;
+}
+
+/*
+	* ADD STOCK
+*/
+
+.container #backtostock {
+	width: 200px
+	height: 200px;
+	margin-top: 10px;
+	margin-left: 10px;
+
+}
+
+.container #backtostock a {
+	text-decoration: none;
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	font-weight: 900;
+	color: #fff;
+}
+
+.container #backtostock a:hover {
+	color: #006FA7;	
+}

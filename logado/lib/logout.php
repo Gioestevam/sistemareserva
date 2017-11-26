@@ -3,8 +3,8 @@
 	
 	if(!$_SESSION['logged'] == "logged") {
 		logout();
-		header("Location: /index.php");
+		header("Location: ../../index.php");
 	} else {
-		header("Location: /index.php");
+		header("Location: ../../index.php");
 	}
 ?>

@@ -6,54 +6,64 @@
     <head>
         <meta charset ="utf-8">
         <title>Adicionar Items</title>
-        <link rel="stylesheet" type="text/css" href="../../assets/css/design.css">
+        <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
     </head>
     <body>
-        <div class="cor">
-            <div class="logofacima">
-                <img class="imgfaclogo" src="http://bit.ly/2yMoENh">
-            </div>
-            <div class="div-menu-lateral">
-                <input type="checkbox" id="bt_menu" />
-                <label for="bt_menu">&#9776;</label>
-                <nav class="menu">
-                    <ul>
-                        <li>
-                            <a href="../lib/profile.php">Perfil</a>
-                        </li>
-                        <li>
-                            <a href="../lib/user.php">Usuários</a>
-                        </li>
-                        <li>
-                            <a href="../lib/reserve.php">Reservados</a>
-                        </li>
-                        <li>
-                            <a href="../lib/stock.php">Estoque</a>
-                        </li>
-                        <li>
-                            <a href="../lib/stats.php">Estatisticas</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="absolutecabecalho">
-                Estoque
-                <!-- ou nome da pagina atual  -->
-            </div>
-            <div class="absoluteimgsair">
-                <a href="link-de-saida" title="SAIR">
-                    <label for="bt_sair">Sair &#x27A8; </label>
-                </a>
-            </div>
-            <div class="divprincipal">
-                <div>
-                    <a href="stock.php">Voltar para o estoque</a>
+        <div class="body_logged">
+            <div id="toolbar">
+                <div class="logo">
+                    <a href="../admin/admin.php">
+                        <img class="imgfaclogo" src="http://bit.ly/2yMoENh">
+                    </a>
                 </div>
-                <div>
-                    <input type="search" name="search">
+                <div class="menu-toolbar">
+                    <nav class="menu">
+                        <ul>
+                            <li>
+                                <a href="../lib/profile.php">
+                                    <span class="icon-profile"></span>
+                                    Perfil
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../lib/user.php">
+                                    <span class="icon-user"></span>
+                                    Usuários
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../lib/add_reserve.php">
+                                    <span class="icon-reserve"></span>
+                                    Reservar
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../lib/stock.php">
+                                    <span class="icon-stock"></span>
+                                    Estoque
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../lib/stats.php">
+                                    <span class="icon-stats"></span>
+                                    Estatisticas
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-                <div>
+                <div class="logout">
+                    <a href="logout.php" title="SAIR">
+                        Sair
+                    </a>
+                </div>
+            </div>              
+            <div class="container">
+                <div class="head-content">
                     Cadastrar Novo Item
+                </div>
+                <div id="backtostock">
+                    <a href="stock.php">Voltar para o estoque</a>
                 </div>
                 <?php
 					if(isset($_POST['cadastrar_item'])) {
@@ -73,7 +83,7 @@
 						
 					}
                 ?>
-                <form method="POST">
+                <form method="POST" id="form_field">
                     <div>
                         <div>
                             Codigo do item
@@ -105,7 +115,7 @@
                         <input type="file" name="img_item">
                     </div>
                     <div>
-                        <input type="submit" name="cadastrar_item" value="Cadastrar Item">
+                        <input id="btn-success" type="submit" name="cadastrar_item" value="Cadastrar Item">
                     </div>
                 </form>
             </div>

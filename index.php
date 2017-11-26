@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>SOLICITAÇAO DE EQUIPAMENTOS</title>
-		<link rel="stylesheet" type="text/css" href="assets/css/design.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	</head>
 	<body class="body-login">
 		<div id="color_background">
@@ -23,8 +23,8 @@
 						if(empty($email) OR empty($password)) {
 							echo "<script>alert('Preencha todos os campos!');</script>";
 						} else {
-							login($email, $password);
-							header("Location: /logado/admin/admin.php");
+							login($email, $password, $status);
+							header("Location: logado/admin/admin.php");
 						}
 					}
 				?>

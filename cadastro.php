@@ -6,11 +6,11 @@
 <html>
 	<head>
 		<title></title>
-		<link rel="stylesheet" type="text/css" href="assets/css/design.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 		<script type="text/javascript" src="assets/js/validatecpf.js"></script>
 	</head>
-	<body>
-		<div id="color_background">
+	<body class="body-login">
+		<div>
         	<center>
 	        <div id="logo">
 	            <img src="assets/img/logo.png">

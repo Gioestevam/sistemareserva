@@ -18,7 +18,7 @@ if(empty($_SESSION['logged'])) {
 
 // Connect MySQL
 
-$connect = new PDO("mysql:host=localhost; dbname=facima", "root", "");
+$connect = new PDO("mysql:host=localhost; dbname=facima", "root", "root");
 $connect->query("SET NAMES utf8;");
 
 	function create() {
@@ -68,9 +68,10 @@ $connect->query("SET NAMES utf8;");
 			<td><?php echo $data["email_user"];?></td>
 			<td><?php echo $data["cpf_user"];?></td>
 			<td><?php echo $data["permission_user"];?></td>
+			<td><?php echo $data["status_user"];?></td>
 			<td>
 				<a href="update.php?edit_id=<?php echo $data['id_user']; ?>">Atualizar</a>
-				<a href="delete.php?del_id=<?php echo $data['id_user']; ?>">Delete</a>
+				<a href="../../delete.php?del_id=<?php echo $data['id_user']; ?>">Delete</a>
 			</td>
 		</tr>
 		<?php
@@ -124,19 +125,20 @@ $connect->query("SET NAMES utf8;");
 		$delete  = $connect->prepare("DELETE FROM user WHERE id_user='$del_id'");
 		$delete -> execute();
 
-		header("location:list.php");
+		header("location:logado/lib/user.php");
 	}
 	
 
-	function login($email, $password) {
+	function login($email, $password, $status) {
 		global $connect;
 		$login = $connect->prepare("SELECT * FROM user WHERE (email_user = :email_user AND password_user = :password_user) LIMIT 1");
 		$login->bindValue("email_user", $email, PDO::PARAM_STR);
 		$login->bindValue("password_user", $password, PDO::PARAM_STR);
 		$login->execute();
 		if(!$login->rowCount() <= 0) {
-			$_SESSION['email_user'] = $email;
-			$_SESSION['logged'] = "logged";
+			$_SESSION['email_user'] 	= $email;
+			$_SESSION['logged'] 		= "logged";
+			$_SESSION['status_user'] 	= $status;
 		} else {
 			$_SESSION['logged'] = "no-logged";
 		}
@@ -162,7 +164,7 @@ $connect->query("SET NAMES utf8;");
 		global $connect;
 		session_name('user');
 		session_destroy();
-		header("location: /index.php");
+		header("location: index.php");
 
 	}
 	
